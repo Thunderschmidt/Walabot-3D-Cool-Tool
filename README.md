@@ -18,7 +18,7 @@ The Walabot 3D Cool Tool now takes the point cloud and displays it in 3D, each p
 
 ##### Object Dectection
 Also, the Walabot 3D Cool Tool uses a cluster search algorithm to find objects (agglomerations of points with high reflection intensities). It marks them and tracks them over time, allowing you to make more sense of the radar echos, which can otherwise be quite confusing.
-(https://github.com/Thunderschmidt/Walabot-3D-Cool-Tool/blob/main/object_detection.png)
+![object_detection](https://user-images.githubusercontent.com/39830230/235746023-08709ddf-d785-42fc-931a-aa523556c4cf.png)
 ### How to Use?
 As soon as the Walabot 3D Cool Tool runs, it waits until you connect the Walabot to your computer. Once detected, it begins to fetch data and to display it as a voxel graphic. You can now:
 
