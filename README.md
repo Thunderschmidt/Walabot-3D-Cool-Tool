@@ -4,6 +4,7 @@ An OpenGL 3D voxel graphic visualizer for the Walabot
 The Walabot is a USB radar device with a phased array antenna:
 
 https://cdn.sparkfun.com/assets/learn_tutorials/7/2/4/walabot-tech-brief-416.pdf
+
 The scan results can be accessed via a Python API:
 
 https://api.walabot.com/
@@ -48,6 +49,6 @@ As soon as the Walabot 3D Cool Tool runs, it waits until you connect the Walabot
 
 ### Requirementes
 The Walabot 3D Cool Tool uses pygame, pyopengl and the walabot api package.
-The Walabot API doesn't work on Macs.
+The Walabot API doesn't work on Mac.
 
 _Martin Hüdepohl_
