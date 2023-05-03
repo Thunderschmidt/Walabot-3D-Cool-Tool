@@ -20,11 +20,11 @@ https://api.walabot.com/
 ### What is the Walabot 3D Cool Tool?
 The Walabot 3D Cool Tool was made for:
 1. visualizing the Walabot output in a graphically pleasing way
-2. using the Walabot for detecting and marking objects
+2. using the Walabot for detecting, marking and tracking objects
 
 ### How does it Work?
 #### Point Cloud
-The Walabot 3D Cool Tool lets the Walabot generate a *point cloud*. A point cloud is an array of "reflection intensities" of spatial points from a scan area in front of the Walabot. How big this scan area shall be and how densely it is filled with points can be exactly configured: A Walabot point cloud can contain just a handful of elements, or thousandw. The bigger the point cloud, the lower the frame rate.
+The Walabot 3D Cool Tool lets the Walabot generate a *point cloud*. A point cloud is an array of "reflection intensities" of spatial points from a scan area in front of the Walabot. How big this scan area is and how densely it is filled with points can be exactly configured: A Walabot point cloud can contain just a handful of elements, or thousandw. The bigger the point cloud, the lower the frame rate.
 
 The maximal Area the Walabot can scan is a hemisphere of 10 meters radius in the direction of its antenna array. It can measure the reflection intensities of 100.000 points 2 or 3 times a second or a few thousand points up to 20 time a second. Its best range resolution is at one milimeter.
 
