@@ -24,9 +24,9 @@ The Walabot 3D Cool Tool was made for:
 
 ### How does it Work?
 #### Point Cloud
-The Walabot 3D Cool Tool lets the Walabot generate a *point cloud*. A point cloud is an array of "reflection intensities" of spatial points from a scan area in front of the Walabot. How big this scan area is and how densely it is filled with points can be exactly configured: A Walabot point cloud can contain just a handful of elements, or thousandw. The bigger the point cloud, the lower the frame rate.
+The Walabot 3D Cool Tool lets the Walabot generate a *point cloud*. A point cloud is an array of "reflection intensities" of spatial points from a scan area in front of the Walabot. How big this scan area is and how densely it is filled with points can be exactly configured: A Walabot point cloud can contain just a handful of elements, or thousands. The bigger the point cloud, the lower the frame rate.
 
-The maximal Area the Walabot can scan is a hemisphere of 10 meters radius in the direction of its antenna array. It can measure the reflection intensities of 100.000 points 2 or 3 times a second or a few thousand points up to 20 time a second. Its best range resolution is at one milimeter.
+The maximal scan area the Walabot can is a hemisphere of 10 meters radius in the direction of its antenna array. The Walabot can measure the reflection intensities of 100.000 points two or three times a second or some thousand points up to 20 times a second. Its finest range resolution is at 1 milimeter.
 
 The Walabot 3D Cool Tool takes the point cloud and displays it in 3D, each point inked in a color that represents its reflection intensity (heat map).
 
@@ -50,6 +50,6 @@ As soon as the Walabot 3D Cool Tool runs, it waits until you connect the Walabot
 
 ### Requirementes
 The Walabot 3D Cool Tool uses pygame, pyopengl and the walabot api package.
-The Walabot API doesn't work on Mac.
+The Walabot API doesn't work on Mac computers.
 
 _Martin Hüdepohl_
