@@ -15,6 +15,8 @@ The scan results can be accessed via a Python API:
 
 https://api.walabot.com/
 
+
+
 ### What is the Walabot 3D Cool Tool?
 The Walabot 3D Cool Tool was made for:
 1. visualizing the Walabot output in a graphically pleasing way
@@ -22,15 +24,17 @@ The Walabot 3D Cool Tool was made for:
 
 ### How does it Work?
 #### Point Cloud
-The Walabot 3D Cool Tool lets the Walabot generate a *point cloud*. This is an array of "reflection intensities" of spatial points from a scan area in front of the Walabot. This scan area can exactly configured: 180° maximum angle spread on the x- and y-axis, a range spread from one centimeter to 10 meters. The resolution can be set to as little as one milimeter. Accordingly, a point cloud can contain just a handful of elements, or tens of thousands.
+The Walabot 3D Cool Tool lets the Walabot generate a *point cloud*. A point cloud is an array of "reflection intensities" of spatial points from a scan area in front of the Walabot. How big this scan area shall be and how densely it is filled with points can be exactly configured: A Walabot point cloud can contain just a handful of elements, or thousandw. The bigger the point cloud, the lower the frame rate.
 
-The Walabot 3D Cool Tool now takes the point cloud and displays it in 3D, each point inked in a color that represents its reflection intensity (heat map).
+The maximal Area the Walabot can scan is a hemisphere of 10 meters radius in the direction of its antenna array. It can measure the reflection intensities of 100.000 points 2 or 3 times a second or a few thousand points up to 20 time a second. Its best range resolution is at one milimeter.
+
+The Walabot 3D Cool Tool takes the point cloud and displays it in 3D, each point inked in a color that represents its reflection intensity (heat map).
 
 #### Object Dectection
-Also, the Walabot 3D Cool Tool uses a cluster search algorithm to find objects (agglomerations of points with high reflection intensities). It marks them and tracks them over time, allowing you to make more sense of the radar echos, which can otherwise be quite confusing.
+Also, the Walabot 3D Cool Tool uses a cluster search algorithm to find objects (agglomerations of points with high reflection intensities). It marks them, gives them a identity and tracks them over time. 
 
 ### How to Use?
-As soon as the Walabot 3D Cool Tool runs, it waits until you connect the Walabot to your computer. Once detected, it begins to fetch data and to display it as a voxel graphic. You can now:
+As soon as the Walabot 3D Cool Tool runs, it waits until you connect the Walabot USB Device to your computer. Once detected, it begins to fetch data and to display it as a voxel graphic. You can now:
 
 - Move and rotate the camera with **mouse, arrow keys, WASD and PgUp/PgDn**
 - Enlarge the scan area with **H, V, R** (horizontal, vetical, range)
