@@ -41,7 +41,7 @@ As soon as the Walabot 3D Cool Tool runs, it waits until you connect the Walabot
 - Shrink down the scan area with **SHIFT - H, V, R**
 - Alter the resolution with **CTRL - (SHIFT) - H, V, R**
 - Calibrate the Walabot by pressing **SPACE**
-- Turn on/off _Sensor Targets_, Walabot's hardware object detection, with **T**
+- Turn on/off "Sensor Targets" (hardware object detection) with **T**
 - Switch to object detection mode, by hitting **TAB**
 - Alter the object detection threshold with **(SHIFT) - C**
 - Switch the voxel shape ⬜/⚪with **Q**
