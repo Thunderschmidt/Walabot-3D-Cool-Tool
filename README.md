@@ -11,7 +11,7 @@ The Walabot is a USB radar device with a phased array antenna:
 
 https://cdn.sparkfun.com/assets/learn_tutorials/7/2/4/walabot-tech-brief-416.pdf
 
-The scan results can be accessed via a Python API:
+The Walabot's scan results can be accessed via a Python API:
 
 https://api.walabot.com/
 
