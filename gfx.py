@@ -18,16 +18,19 @@ def rad_2_deg(angle_rad): return angle_rad / math.pi * 180
 def deg_2_rad(angle_deg): return angle_deg / 180 * math.pi
 
 
-def draw_text_2D(x, y, text, color=(255, 255, 255, 255)):
-    text_surface = font.render(text, True, color).convert_alpha()
+def draw_text_2D(x, y, text, color=(255, 255, 255, 255), bg_color = None):
+    text_surface = font.render(text, True, color, bg_color).convert_alpha()
     text_data = pygame.image.tostring(text_surface, "RGBA", True)
     glWindowPos2d(x, y)
     glDrawPixels(text_surface.get_width(), text_surface.get_height(), GL_RGBA, GL_UNSIGNED_BYTE, text_data)
 
 
-def draw_text_3D(text, center=None, offset_2D=(0, 0), offset_3D=(0, 0, 0), color=(255, 255, 255, 255)):
+def draw_text_3D(text, center=None, offset_2D=(0, 0), offset_3D=(0, 0, 0), color=(255, 255, 255, 255), bg_color = None):
     pos = gluProject(offset_3D[0], offset_3D[1], offset_3D[2])
-    text_surface = font.render(text, True, color).convert_alpha()
+    if bg_color is None:
+        text_surface = font.render(text, True, color).convert_alpha()
+    else:
+        text_surface = font.render(text, True, color, bg_color).convert_alpha()
     text_data = pygame.image.tostring(text_surface, "RGBA", True)
     centerer = 0
     if center: centerer = - text_surface.get_width() / 2
@@ -79,7 +82,7 @@ class Cube(object):
         glPopMatrix()
 
     def draw(self):
-        #        glDisable(GL_POLYGON_OFFSET_FILL);
+        # glDisable(GL_POLYGON_OFFSET_FILL);
         glEnableClientState(GL_VERTEX_ARRAY)
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
         glBindBuffer(GL_ARRAY_BUFFER, self.vert)

@@ -48,6 +48,7 @@ C       C
        /
       C
 """
+import math
 #import math
 #import pygame
 #from pygame.locals import *
@@ -88,6 +89,8 @@ class Hotspot:
         self.intensity = intensity
         self.belongs_to_cluster = None
 
+    def __eq__(self, other):
+        return self.index == other.index
     def draw(self):
         glBegin(GL_POINTS)
         glVertex3fv(self.cart_loc)
@@ -108,7 +111,7 @@ class Cluster:
         self.c_max = [None, None, None]
         self.p_min = [None, None, None]
         self.p_max = [None, None, None]
-        self.is_historic = False
+
     def is_similar_to(self, cluster_2):
         pos_1 = self.get_polar_pos()
         pos_2 = cluster_2.get_polar_pos()
@@ -148,8 +151,8 @@ class Cluster:
         cluster.hotspots = None
 
     def is_in_front_of(self, cluster):
-        if abs(cluster.p_pos[0] - self.p_pos[0]) < RANGE_FILTER_THRESHOLD and abs(
-                cluster.p_pos[1] - self.p_pos[1]) < RANGE_FILTER_THRESHOLD: return True
+        if abs(cluster.p_pos[0] - self.p_pos[0]) < CLUSTER_SHADOW_OFFSET and abs(
+                cluster.p_pos[1] - self.p_pos[1]) < CLUSTER_SHADOW_OFFSET: return True
         return False
 
     def get_cart_pos(self):
@@ -171,7 +174,6 @@ class Cluster:
         return self.size
 
     def draw_hotspots(self):
-        if self.is_historic is False: return
         glColor4ub(*self.color)
         glPointSize(HOTSPOT_POINTSIZE)
         glBegin(GL_POINTS)
@@ -180,15 +182,17 @@ class Cluster:
         glEnd()
 
     def draw_call_out(self):
-        if self.is_historic is False: return
         pos = self.get_cart_pos()
-        draw_text_3D(f"[{str(-pos[0])[:4]} {str(pos[1])[:4]} {str(pos[2])[:4]}]", True, (0, 20), (pos[0], self.c_max[1], pos[2]))
+        dist = math.hypot(*pos)
+        draw_text_3D(f" {dist:.2f} ", True, (0, 20), (pos[0], self.c_max[1], pos[2]), (0,0,0,255), self.color)
 
     def draw_cube_around_cluster(self):
-        if self.is_historic is False: return
         glColor4ub(*self.color)
         cube.draw_stretched(self.get_cart_pos(), self.get_size())
 
+    def overlaps_with(self, cluster_2):
+        if any(element in self.hotspots for element in cluster_2.hotspots): return True
+        return False
 
 class ClusterMaker:
     clusters = []
@@ -215,7 +219,6 @@ class ClusterMaker:
             if clusters_2 is None: continue
             for cluster_2 in clusters_2:
                 if cluster_2.is_similar_to(cluster_1):
-                    if i == 0: cluster_1.is_historic = True
                     return cluster_2.id
         return None
 
@@ -291,3 +294,23 @@ class ClusterMaker:
         for cluster in clusters:
             if cluster.id < 1000: new_clusters.append(cluster)
         return new_clusters
+
+    def calc_drawable_clusters(self):
+        drawable_clusters = []
+        cluster_ids = []
+        cluster_colors = []
+        for i in range(CLUSTER_NOSTALGIA):
+            clusters = self.cluster_history.get(i)
+            if clusters is None: return
+            for cluster in clusters:
+                if cluster.id not in cluster_ids:
+                    overlaps = False
+                    for drw_clus in drawable_clusters:
+                        if  cluster.overlaps_with(drw_clus):
+                            overlaps = True
+                            break
+                    if overlaps: continue
+                    drawable_clusters.append(cluster)
+                    cluster_ids.append(cluster.id)
+                    cluster_colors.append(cluster.color)
+        return drawable_clusters;

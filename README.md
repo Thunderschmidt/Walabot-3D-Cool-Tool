@@ -14,22 +14,14 @@ The Walabot 3D Cool Tool was made for:
 1. visualizing the Walabot output in a graphically pleasing way
 2. using the Walabot for detecting and marking objects
 
-
-![scanning_in_2D_mode](https://user-images.githubusercontent.com/39830230/235747096-b2350c78-a106-4bae-b8de-bce3ad748b0c.png)
-
-
 ### How does it Work?
 #### Point Cloud
 The Walabot 3D Cool Tool lets the Walabot generate a *point cloud*. This is an array of "reflection intensities" of spatial points from a scan area in front of the Walabot. This scan area can exactly configured: 180° maximum angle spread on the x- and y-axis, a range spread from one centimeter to 10 meters. The resolution can be set to as little as one milimeter. Accordingly, a point cloud can contain just a handful of elements, or tens of thousands.
 
 The Walabot 3D Cool Tool now takes the point cloud and displays it in 3D, each point inked in a color that represents its reflection intensity (heat map).
 
-![walabot_hemispherical_scan](https://user-images.githubusercontent.com/39830230/235746920-1673dc7c-a5a5-4ab7-9d58-94be8df9dd57.png)
-
 #### Object Dectection
 Also, the Walabot 3D Cool Tool uses a cluster search algorithm to find objects (agglomerations of points with high reflection intensities). It marks them and tracks them over time, allowing you to make more sense of the radar echos, which can otherwise be quite confusing.
-
-![object_detection](https://user-images.githubusercontent.com/39830230/235746023-08709ddf-d785-42fc-931a-aa523556c4cf.png)
 
 ### How to Use?
 As soon as the Walabot 3D Cool Tool runs, it waits until you connect the Walabot to your computer. Once detected, it begins to fetch data and to display it as a voxel graphic. You can now:
@@ -42,9 +34,8 @@ As soon as the Walabot 3D Cool Tool runs, it waits until you connect the Walabot
 - Turn on/off _Sensor Targets_, Walabot's hardware object detection, with **T**
 - Switch to object detection mode, by hitting **TAB**
 - Alter the object detection threshold with **(SHIFT) - C**
+- Switch the voxel shape ⬜/⚪with **Q**
 
-
-![walabot_at_max_range](https://user-images.githubusercontent.com/39830230/235747225-681e3000-269c-415c-8b41-7a25a3be8368.png)
 
 
 ### Requirementes

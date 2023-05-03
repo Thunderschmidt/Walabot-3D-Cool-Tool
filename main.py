@@ -58,7 +58,7 @@ class GridDrawer:
             i += 1
         i = 1
         while i <= self.max_dist_m:
-            draw_text_3D(f"{i}", True, (0, -20), (self.width_m, 0, i), GRIDCOLOR)
+            draw_text_3D(f"{i}", True, (0, -20), (self.width_m, - FLOORDISTANCE, i), GRIDCOLOR)
             i += 1
     @staticmethod
     def draw_walabot():
@@ -310,7 +310,6 @@ class Walabot:
             WB.Init()
             WB.SetSettingsFolder()
             connecting_attempt_number += 1
-            #            print(wb.GetInstrumentsList())
             try:
                 WB.ConnectAny()
             except WB.WalabotError as err:
@@ -388,7 +387,7 @@ class Walabot:
         while WB.GetStatus()[0] != 4:
             self.status = "calibrating (" + str(WB.GetStatus()[1]) + "%)"
             WB.Trigger()
-        self.status = "Connected!"
+        self.status = "\"" + str(WB.GetInstrumentsList()) + "\" connected!"
         play_beep(1200, 200)
 
     def calibrate(self):
@@ -420,6 +419,7 @@ glLineWidth(STANDARDLINEWIDTH)
 glEnable(GL_DEPTH_TEST)  # turns on z buffering
 glClearColor(*BACKGROUNDCOLOR)  # background color
 glMatrixMode(GL_MODELVIEW)
+glDisable(GL_LIGHTING)
 camera_start_matrix = glGetFloatv(GL_MODELVIEW_MATRIX)
 
 clock_GFX = pygame.time.Clock()
@@ -434,7 +434,7 @@ mouse_is_pressed = False
 current_mouse_position = None
 last_mouse_position = None
 cluster_search_is_active = False
-
+point_antialising = True
 walabot.connect()
 thread_terminator = False
 walabot_fetch_data_thread = threading.Thread(target=fetch_walabot_data_loop)
@@ -458,7 +458,7 @@ while running:
         point_canvas.create(x_count, y_count, z_count, (WALA_MINRANGE_CM, WALA_MAXRANGE_CM, WALA_RANGESTEPSIZE_CM),
                             (-WALA_HORIZONTALANGLE, WALA_HORIZONTALANGLE, WALA_HORIZONTALSTEPSIZE_DEG),
                             (-WALA_VERTICALANGLE_DEG, WALA_VERTICALANGLE_DEG, WALA_VERTICALSTEPSIZE_DEG))
-
+        walabot.calc_observed_area()
         walabot_fetch_data_thread.start()
 
     """handle input"""
@@ -477,7 +477,11 @@ while running:
             if event.key == pygame.K_SPACE:
                 walabot.calibrate()
             if event.key == pygame.K_TAB:
-                cluster_search_is_active = 1 - cluster_search_is_active
+                cluster_search_is_active = not cluster_search_is_active
+            if event.key == pygame.K_q:
+                point_antialising = not point_antialising
+                if point_antialising: glEnable(GL_POINT_SMOOTH)
+                else: glDisable(GL_POINT_SMOOTH)
             if event.key == pygame.K_r or event.key == pygame.K_v or event.key == pygame.K_h:
                 thread_terminator = True
                 walabot_fetch_data_thread.join()
@@ -541,7 +545,6 @@ while running:
                 point_canvas.create(x_count, y_count, z_count, walabot.range, walabot.phi, walabot.theta)
                 walabot_fetch_data_thread = threading.Thread(target=fetch_walabot_data_loop)
                 walabot_fetch_data_thread.start()
-
     if keys[K_c]:
         if keys[K_LSHIFT] or keys[K_RSHIFT]:
             point_canvas.add_value_to_threshold(-1)
@@ -591,18 +594,15 @@ while running:
     if not cluster_search_is_active:
         point_canvas.draw()
 
-    glClear(GL_DEPTH_BUFFER_BIT)
-    clusters = cluster_maker.cluster_history.get()
+#    glClear(GL_DEPTH_BUFFER_BIT)
+    clusters = cluster_maker.calc_drawable_clusters()
+
     if clusters is not None:
         for cluster in clusters:
             #cluster.draw_cube_around_cluster()
             cluster.draw_hotspots()
         for cluster in clusters:
             cluster.draw_call_out()
-    clusters = cluster_maker.cluster_history.get(1)
-    if clusters is not None:
-        for cluster in clusters:
-            cluster.draw_hotspots()
 
     glDisable(GL_DEPTH_TEST)
     if walabot.sensor_targets_are_shown:
@@ -617,31 +617,37 @@ while running:
         column += 20
         return column
 
-    draw_text_2D(10, WINDOWSIZE[1] - col(), f"Status: {walabot.status}", (255, 128, 255, 255))
+    draw_text_2D(10, WINDOWSIZE[1] - col(), f"Walabot Status: {walabot.status}", WALABOTCOLOR)
+    col()
     draw_text_2D(10, WINDOWSIZE[1] - col(), "[PgUp][PgDn][W][A][S][D][←][→][↑][↓] Control Camera")
     draw_text_2D(10, WINDOWSIZE[1] - col(), "[SPACE] Calibrate")
+    draw_text_2D(10, WINDOWSIZE[1] - col(), "[Q] Change Voxel Mode")
     if cluster_search_is_active:
         draw_text_2D(10, WINDOWSIZE[1] - col(), "[TAB] Stop Object Detection")
-        draw_text_2D(10, WINDOWSIZE[1] - col(), f"[C] Clustering Cap: {str(point_canvas.clustering_threshold)}/255")
-
     else:
         draw_text_2D(10, WINDOWSIZE[1] - col(), "[TAB] Start Object Detection")
+    draw_text_2D(10, WINDOWSIZE[1] - col(), f"[C] Clustering Cap: {str(point_canvas.clustering_threshold)}/255")
     if walabot.sensor_targets_are_shown:
         draw_text_2D(10, WINDOWSIZE[1] - col(), "[T] Hide Sensor Targets")
     else:
         draw_text_2D(10, WINDOWSIZE[1] - col(), "[T] Show Sensor Targets")
-    draw_text_2D(10, WINDOWSIZE[1] - col(), f"[H] Hor. Spread   : {str(walabot.phi[0])[:4]}° → {str(walabot.phi[1])[:4]}°", (235, 200, 32, 255))
-    draw_text_2D(10, WINDOWSIZE[1] - col(), f"[V] Vert. Spread  : {str(walabot.theta[0])[:4]}° → {str(walabot.theta[1])[:4]}°", (235, 200, 32, 255))
-    draw_text_2D(10, WINDOWSIZE[1] - col(), f"[R] Range         : {str(math.trunc(walabot.range[0]))} cm → {str(math.trunc(walabot.range[1]))[:4]} cm", (235, 200, 32, 255))
-    draw_text_2D(10, WINDOWSIZE[1] - col(), f"[CTRL]+[H] H-Res. : {str(walabot.phi[2])[:4]}° ({str(walabot.raw_image_size[1])} steps)", (235, 200, 32, 255))
-    draw_text_2D(10, WINDOWSIZE[1] - col(), f"[CTRL]+[V] V-Res. : {str(walabot.theta[2])[:4]}° ({str(walabot.raw_image_size[0])} steps)", (235, 200, 32, 255))
-    draw_text_2D(10, WINDOWSIZE[1] - col(), f"[CTRL]+[R] R-Res. : {str(walabot.range[2])[:4]} cm ({str(walabot.raw_image_size[2])})", (235, 200, 32, 255))
+    col()
+    draw_text_2D(10, WINDOWSIZE[1] - col(), f"[H] Hor. Spread   : {str(walabot.phi[0])[:4]}° → {str(walabot.phi[1])[:4]}°")
+    draw_text_2D(10, WINDOWSIZE[1] - col(), f"[V] Vert. Spread  : {str(walabot.theta[0])[:4]}° → {str(walabot.theta[1])[:4]}°")
+    draw_text_2D(10, WINDOWSIZE[1] - col(), f"[R] Range         : {str(math.trunc(walabot.range[0]))} cm → {str(math.trunc(walabot.range[1]))[:4]} cm")
+    col()
+    draw_text_2D(10, WINDOWSIZE[1] - col(), f"[CTRL]+[H] H-Res. : {str(walabot.phi[2])[:4]}° ({str(walabot.raw_image_size[1])} steps)")
+    draw_text_2D(10, WINDOWSIZE[1] - col(), f"[CTRL]+[V] V-Res. : {str(walabot.theta[2])[:4]}° ({str(walabot.raw_image_size[0])} steps)")
+    draw_text_2D(10, WINDOWSIZE[1] - col(), f"[CTRL]+[R] R-Res. : {str(walabot.range[2])[:4]} cm ({str(walabot.raw_image_size[2])})")
+    col()
     draw_text_2D(10, WINDOWSIZE[1] - col(), f"Point Cloud Size  : {str(walabot.point_count)}")
     draw_text_2D(10, WINDOWSIZE[1] - col(), f"Image Energy      : {str(walabot.image_energy)[:5]}")
-    draw_text_2D(10, WINDOWSIZE[1] - col(), f"GFX FPS           : {str(fps)[:4]}", (0, 255, 255, 255))
-    draw_text_2D(10, WINDOWSIZE[1] - col(), f"Walabot FPS       : {str(clock_walabot_loop.get_fps())[:4]}", (0, 255, 255, 255))
+    draw_text_2D(10, WINDOWSIZE[1] - col(), f"Observed Area     : {str(walabot.observed_area)[:3]} m²")
+    col()
+    draw_text_2D(10, WINDOWSIZE[1] - col(), f"GFX FPS           : {str(fps)[:4]}")
+    draw_text_2D(10, WINDOWSIZE[1] - col(), f"Walabot FPS       : {str(clock_walabot_loop.get_fps())[:4]}")
     if cluster_search_is_active:
-        draw_text_2D(10, WINDOWSIZE[1] - col(), f"Clustering FPS    : {str(cluster_maker.clock.get_fps())[:4]}", (0, 255, 255, 255))
+        draw_text_2D(10, WINDOWSIZE[1] - col(), f"Clustering FPS    : {str(cluster_maker.clock.get_fps())[:4]}")
 
     #    drawText2D(10, WINDOWSIZE[1] - col(), "Dyn. threshold   : " + str(walabot.dynamicImageEnergyThreshold)[:4])
 
