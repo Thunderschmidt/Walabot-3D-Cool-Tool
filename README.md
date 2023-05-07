@@ -1,6 +1,8 @@
 # Walabot 3D Cool Tool
 An OpenGL 3D voxel graphic visualizer for the Walabot
 
+![walaphoto](https://user-images.githubusercontent.com/39830230/236703648-03760324-b672-4137-96d1-289086614597.png)
+
 
 ![screens](https://user-images.githubusercontent.com/39830230/235932224-c9dcb5e5-7da8-4041-aad0-304647196038.png)
 
