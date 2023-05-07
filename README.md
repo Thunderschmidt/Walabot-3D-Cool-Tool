@@ -30,7 +30,7 @@ The Walabot 3D Cool Tool lets the Walabot generate a *point cloud*. A point clou
 
 The maximal scan area the Walabot can is a hemisphere of 10 meters radius in the direction of its antenna array. The Walabot can measure the reflection intensities of 100.000 points two or three times a second or some thousand points up to 20 times a second. Its finest range resolution is at 1 milimeter.
 
-https://www.youtube.com/watch?v=S_Uthvuah8U
+[![Alt text](https://img.youtube.com/vi/S_Uthvuah8U/0.jpg)](https://www.youtube.com/watch?v=S_Uthvuah8U)
 
 The Walabot 3D Cool Tool takes the point cloud and displays it in 3D, each point inked in a color that represents its reflection intensity (heat map).
 
