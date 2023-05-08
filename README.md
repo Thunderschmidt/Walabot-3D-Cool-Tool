@@ -49,10 +49,12 @@ As soon as the Walabot 3D Cool Tool runs, it waits until you connect the Walabot
 - Alter the object detection threshold with **(SHIFT) - C**
 - Switch the voxel shape ⬜/⚪with **Q**
 
+[![Walabot 3D Cool Tool Demo](https://img.youtube.com/vi/afGt2iQoe1s/0.jpg)](https://www.youtube.com/watch?v=afGt2iQoe1s)
+#### Watch Demo on YouTube
 
 
 ### Requirementes
-The Walabot 3D Cool Tool uses pygame, pyopengl and the walabot api package.
+The Walabot 3D Cool Tool is programmed in Python and uses pygame, pyopengl and the walabot api package.
 The Walabot API doesn't work on Mac computers.
 
 _Martin Hüdepohl_
