@@ -49,8 +49,10 @@ As soon as the Walabot 3D Cool Tool runs, it waits until you connect the Walabot
 - Alter the object detection threshold with **(SHIFT) - C**
 - Switch the voxel shape ⬜/⚪with **Q**
 
+
+#### Watch Demo on YouTube:
 [![Walabot 3D Cool Tool Demo](https://img.youtube.com/vi/afGt2iQoe1s/0.jpg)](https://www.youtube.com/watch?v=afGt2iQoe1s)
-#### Watch Demo on YouTube
+
 
 
 ### Requirementes
