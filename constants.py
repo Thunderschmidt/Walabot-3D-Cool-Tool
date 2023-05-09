@@ -2,10 +2,10 @@ WINDOWSIZE = (1200, 640)
 MAX_FPS = 40
 
 """Initial Walabot settings"""
-WALA_MINRANGE_CM = 100  # minimal range threshold in cm (1...1000)
-WALA_MAXRANGE_CM = 500  # maximal range threshold in cm (1...1000)
+WALA_MINRANGE_CM = 15  # minimal range threshold in cm (1...1000)
+WALA_MAXRANGE_CM = 400  # maximal range threshold in cm (1...1000)
 WALA_RANGESTEPSIZE_CM = 5.0  # Resolution in cm (0.1...10)
-WALA_HORIZONTALANGLE = 60  # ?...90 Degrees (90 means 180)
+WALA_HORIZONTALANGLE = 20  # ?...90 Degrees (90 means 180)
 WALA_HORIZONTALSTEPSIZE_DEG = 4  # Resolution in degrees (1.0...10)
 WALA_VERTICALANGLE_DEG = 10  # ?...90 Degrees (90 means 180)
 WALA_VERTICALSTEPSIZE_DEG = 4  # Resolution in degrees (1.0...10) (smaller means finer)
